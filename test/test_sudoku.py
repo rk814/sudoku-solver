@@ -3,8 +3,8 @@ import unittest
 import numpy as np
 import numpy.testing as npt
 
-from sudoku.exceptions.sudoku_exceptions import UnresolvableException
-from sudoku.sudoku_solver import SudokuSolver
+from sudoku.exceptions.core import UnresolvableException
+from sudoku.model.sudoku_solver import SudokuSolver
 
 
 class TestSudoku(unittest.TestCase):

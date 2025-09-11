@@ -1,6 +1,6 @@
 import numpy as np
 
-from sudoku.exceptions.sudoku_exceptions import UnresolvableException, AmbiguousException
+from sudoku.exceptions.core import UnresolvableException, AmbiguousException
 
 """
 todo

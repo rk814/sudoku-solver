@@ -1,7 +1,7 @@
 import unittest
 
-from sudoku.exceptions.sudoku_exceptions import UnresolvableException, AmbiguousException
-from sudoku.sudoku_solver import SudokuSolver
+from sudoku.exceptions.core import UnresolvableException, AmbiguousException
+from sudoku.model.sudoku_solver import SudokuSolver
 
 
 class TestSudokuIntegration(unittest.TestCase):

@@ -1,6 +1,6 @@
-from codewars.sudoku.exceptions import *
-from codewars.sudoku.model.sudoku_dummy_creator import SudokuDummyCreator
-from codewars.sudoku.sudoku_solver import SudokuSolver
+from sudoku.exceptions.core import *
+from sudoku.model.sudoku_dummy_creator import SudokuDummyCreator
+from sudoku.model.sudoku_solver import SudokuSolver
 
 
 class SudokuRandomCreator(SudokuDummyCreator):
