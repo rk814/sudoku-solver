@@ -9,8 +9,8 @@ class SudokuDummyCreator:
         self.clue_number = clue_number
 
     @classmethod
-    def random_clues(cls):
-        random_clues = random.randint(20, 35)
+    def random_clues(cls, min_clues=20, max_clues=35):
+        random_clues = random.randint(min_clues, max_clues)
         return cls(random_clues)
 
     def create(self):
