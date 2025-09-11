@@ -3,6 +3,7 @@ import unittest
 import numpy as np
 import numpy.testing as npt
 
+from sudoku.exceptions.sudoku_exceptions import UnresolvableException
 from sudoku.sudoku_solver import SudokuSolver
 
 
@@ -23,11 +24,11 @@ class TestSudoku(unittest.TestCase):
         self.test_board = SudokuSolver(test_sample)
 
     def test_constructor(self):
-        board = SudokuSolver([[0, 0, 1, 0], [2, 6, 0, 9], [3, 7, 5, 8]])
-        npt.assert_array_equal(board._array, np.array(
+        sudoku = SudokuSolver([[0, 0, 1, 0], [2, 6, 0, 9], [3, 7, 5, 8]])
+        npt.assert_array_equal(sudoku._array, np.array(
             [[{4, 8, 9}, {4, 8, 9}, 1, {2, 3, 4, 5, 6, 7}], [2, 6, {4, 8}, 9], [3, 7, 5, 8]]))
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(UnresolvableException):
             SudokuSolver([[0, 4, 1, 9], [2, 6, 8, 9], [3, 7, 5, 8]])
 
     def test_get_row_by_cell(self):
