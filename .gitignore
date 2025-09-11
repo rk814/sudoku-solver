@@ -1,0 +1,4 @@
+sudokusolver.egg-info/
+venv/
+__pycache__/
+.idea/
