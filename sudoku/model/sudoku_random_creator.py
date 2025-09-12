@@ -14,9 +14,8 @@ class SudokuRandomCreator(SudokuDummyCreator):
         raise Exception(f"Not found valid sudoku in {SudokuRandomCreator.MAX_ITERATIONS} iterations")
 
     def _is_solvable(self, sudoku):
-        solver = SudokuSolver(sudoku)
-
         try:
+            solver = SudokuSolver(sudoku)
             solver.solve()
         except AmbiguousException | UnresolvableException:
             return False
