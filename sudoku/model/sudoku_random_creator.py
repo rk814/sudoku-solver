@@ -17,6 +17,6 @@ class SudokuRandomCreator(SudokuDummyCreator):
         try:
             solver = SudokuSolver(sudoku)
             solver.solve()
-        except AmbiguousException | UnresolvableException:
+        except (AmbiguousException, UnresolvableException):
             return False
         return True

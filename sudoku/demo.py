@@ -1,4 +1,5 @@
 from sudoku.model.sudoku_random_creator import SudokuRandomCreator
+from sudoku.view.SudokuPrinter import SudokuPrinter
 
 """
 Example of using random creator to generate sudoku.
