@@ -37,10 +37,10 @@ td {
     border-width: var(--thin-line);
 }
 
-td.bold-inner-line {
+td:nth-child(3n) {
     border-right-width: var(--bold-line);
 }
 
-tr.bold-inner-line > td {
+tr:nth-child(3n) td {
     border-bottom-width: var(--bold-line);
 }

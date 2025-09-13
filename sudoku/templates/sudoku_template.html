@@ -8,10 +8,8 @@
 <body>
 <div class="container">
     <table>    {% for row in sudoku %}
-        <tr class={% if loop.index % 3 == 0 %}bold-inner-line{% endif %}>
-            {% for cell in row %}
-                <td class="{% if loop.index % 3 == 0 %}bold-inner-line{% endif %}">
-                    {% if cell != 0 %}{{ cell }}{% endif %}</td>        {% endfor %}
+        <tr>            {% for cell in row %}
+            <td>                    {% if cell != 0 %}{{ cell }}{% endif %}</td>        {% endfor %}
         </tr>    {% endfor %}
     </table>
 </div>
