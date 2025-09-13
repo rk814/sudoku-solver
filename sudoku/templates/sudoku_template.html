@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="../output/sudoku.css">
+</head>
+<body>
+<div class="container">
+    <table>    {% for row in sudoku %}
+        <tr class={% if loop.index % 3 == 0 %}bold-inner-line{% endif %}>
+            {% for cell in row %}
+                <td class="{% if loop.index % 3 == 0 %}bold-inner-line{% endif %}">
+                    {% if cell != 0 %}{{ cell }}{% endif %}</td>        {% endfor %}
+        </tr>    {% endfor %}
+    </table>
+</div>
+</body>
+</html>

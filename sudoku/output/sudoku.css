@@ -1,0 +1,46 @@
+/* Reset */
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bold-line: 0.2rem;
+    --thin-line: 0.1rem;
+    --cell_size: 3rem;
+}
+
+.container {
+    margin: auto;
+    width: max-content;
+}
+
+table {
+    border-collapse: collapse;
+    border-width: var(--bold-line);
+    border-style: solid;
+    border-color: black;
+    font-size: 24px;
+    font-family: 'Consolas', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    text-align: center;
+    margin: 3rem;
+}
+
+td {
+    height: var(--cell_size);
+    width: var(--cell_size);
+    border-style: solid;
+    border-color: black;
+    border-width: var(--thin-line);
+}
+
+td.bold-inner-line {
+    border-right-width: var(--bold-line);
+}
+
+tr.bold-inner-line > td {
+    border-bottom-width: var(--bold-line);
+}
