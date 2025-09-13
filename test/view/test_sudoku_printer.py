@@ -9,4 +9,4 @@ class TestSudokuPrinter(unittest.TestCase):
         sudoku = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
         printer = SudokuPrinter()
-        printer.print(sudoku)
+        printer.print(sudoku)  # todo problem with path

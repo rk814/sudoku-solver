@@ -2,14 +2,6 @@ import numpy as np
 
 from sudoku.exceptions.core import UnresolvableException, AmbiguousException
 
-"""
-todo
--> cleanup
--> custom error
--> no solution indicator
--> too many solutions indicator
-"""
-
 
 class SudokuSolver:
     """
@@ -61,7 +53,7 @@ class SudokuSolver:
         return indices[0][0], indices[1][0]
 
     def solve(self):
-        counter = 0
+        counter = 0  # todo better counter
 
         while not self.is_solved():
             cell_position = self.get_cell_pos_with_lowest_candidates_num()
@@ -72,8 +64,6 @@ class SudokuSolver:
                 # continue
             else:
                 self.array = self._solve_loop(cell, cell_position)
-                # if solution:
-                #     self.array = solution
                 counter += 1
                 break
 
@@ -92,8 +82,11 @@ class SudokuSolver:
                 if result is None:
                     result = solution
             except UnresolvableException:
-                print("Dead end!")
+                # Dead end
                 continue
+
+        if not result:
+            raise UnresolvableException  # todo refactor or extra class Board
 
         return result
 
