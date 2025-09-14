@@ -92,3 +92,7 @@ class Board:
 
         if len(cell) == 0:
             raise UnresolvableException
+
+    @staticmethod
+    def get_any_candidate(cell):
+        return next(iter(cell))
