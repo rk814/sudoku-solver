@@ -7,10 +7,12 @@
 </head>
 <body>
 <div class="container">
-    <table>    {% for row in sudoku %}
-        <tr>            {% for cell in row %}
-            <td>                    {% if cell != 0 %}{{ cell }}{% endif %}</td>        {% endfor %}
-        </tr>    {% endfor %}
+    <table>
+        <tbody>{% for row in sudoku %}
+            <tr>            {% for cell in row %}
+                <td>{% if cell != 0 %}{{ cell }}{% endif %}</td>        {% endfor %}
+            </tr>    {% endfor %}
+        </tbody>
     </table>
 </div>
 </body>

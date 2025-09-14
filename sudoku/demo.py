@@ -29,5 +29,5 @@ if __name__ == "__main__":
     Generated sudoku (list) can be printed to html document with use of SudokuPrinter class.
     File is saved in output project folder.
     """
-    printer = SudokuPrinter()
+    printer = SudokuPrinter(__file__)
     printer.print(sudoku)
