@@ -4,8 +4,7 @@ from sudoku.model.board import Board
 
 class SudokuSolver:
     """
-    Bases on one board (numpy object) for all available candidates represented by a set of ints e.g. {1,2,4,5,9}
-    and solved numbers represented by single int e.g. 4.
+    Uses Board class to solve sudoku puzzles.
     """
 
     def __init__(self, array):
