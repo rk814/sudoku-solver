@@ -130,7 +130,7 @@ class TestBoard(unittest.TestCase):
 
         actual = sudoku.copy()
 
-        self.assertNotEquals(actual, sudoku)
+        self.assertNotEqual(actual, sudoku)
         self.assertEqual(actual.array, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
     def test_get_any_candidate(self):
@@ -139,3 +139,13 @@ class TestBoard(unittest.TestCase):
         actual = Board.get_any_candidate(candidates)
 
         self.assertIn(actual, candidates)
+
+    def test_get_empty_positions(self):
+        board = Board.from_empty()
+
+        actual = board.get_empty_cell_positions()
+
+        self.assertIn([0, 0], actual)
+        self.assertIn([8, 8], actual)
+        self.assertIn([5, 5], actual)
+        self.assertNotIn([10, 10], actual)

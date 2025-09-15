@@ -1,11 +1,12 @@
 import random
 
-import numpy as np
+from sudoku.model.board import Board
 
 
 class SudokuDummyCreator:
+    DEFAULT_CLUE_NUMBER = 25
 
-    def __init__(self, clue_number=25):
+    def __init__(self, clue_number=DEFAULT_CLUE_NUMBER):
         self.clue_number = clue_number
         self._validate_clue_number()
 
@@ -15,15 +16,16 @@ class SudokuDummyCreator:
         return cls(random_clues)
 
     def create(self):
-        array = np.zeros((9, 9), int)
+        board = Board.from_empty()
 
-        random_pos = random.sample(range(0, 9 * 9), k=self.clue_number)
-        for i in random_pos:
-            random_value = random.randint(1, 9)
-            flatten = array.ravel()
-            flatten[i] = random_value
+        for i in range(self.clue_number):
+            empty_positions = board.get_empty_cell_positions()
+            random_position = random.choice(empty_positions)
+            candidates = board.get_cell(random_position)
+            random_value = random.choice(list(candidates))
+            board.set_cell(random_position, random_value)
 
-        return array.tolist()
+        return board.get_zfill_array()
 
     def _validate_clue_number(self):
         if 17 > self.clue_number or self.clue_number > 80:

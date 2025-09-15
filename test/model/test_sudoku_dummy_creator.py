@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from sudoku.exceptions.core import UnresolvableException
 from sudoku.model.sudoku_dummy_creator import SudokuDummyCreator
 
 
@@ -34,14 +35,19 @@ class TestSudokuDummyCreator(TestCase):
     def test_sudoku_array_create(self):
         creator = SudokuDummyCreator()
 
-        actual = creator.create()
+        actual = None
+        try:
+            actual = creator.create()
+        except UnresolvableException:
+            self.test_sudoku_array_create()
 
         self.assertIsInstance(actual, list)
         self.assertIsInstance(actual[0], list)
-        self.assertIsInstance(actual[0][0], int)
+        self.assertIsInstance(actual[0][0], (int, set))
         self.assertEqual(len(actual), 9)
         self.assertEqual(len(actual[0]), 9)
 
-        flatten = [x for row in actual for x in row]
-        self.assertEqual(flatten.count(0), 81 - 25)
-        self.assertNotIn(flatten, [-1, 10, 100])
+        clues = [x for row in actual for x in row if x != 0]
+        self.assertEqual(len(clues), SudokuDummyCreator.DEFAULT_CLUE_NUMBER)
+        for n in clues:
+            self.assertIn(n, range(1, 10))

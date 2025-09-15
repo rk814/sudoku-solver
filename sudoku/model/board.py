@@ -14,13 +14,21 @@ class Board:
         self._array = self._create_empty_board()
         self._initialize_board()
 
+    @classmethod
+    def from_empty(cls):
+        empty_board = np.zeros((9, 9))
+        return cls(empty_board)
+
     @property
     def array(self):
         return self._array.tolist()
 
-    @array.setter
+    @array.setter  # ??? do i need it
     def array(self, value):
         self._array = np.array(value)
+
+    def get_zfill_array(self):
+        return self._zfill_array()
 
     def get_cell(self, pos):
         return self._array[pos[0], pos[1]]
@@ -52,12 +60,20 @@ class Board:
         indices = np.where(array_of_lengths.reshape(self._array.shape) == lowest_num)
         return indices[0][0], indices[1][0]
 
+    def get_empty_cell_positions(self):
+        mask = np.vectorize(lambda x: isinstance(x, set))(self.array)
+        return np.argwhere(mask)
+
     def is_solved(self):
         return np.all([not isinstance(x, set) for x in self._array.flatten()])
 
     def copy(self):
-        array = [[0 if isinstance(x, set) else x for x in row] for row in self._array]
+        array = self._zfill_array()
         return Board(array)
+
+    def _zfill_array(self):
+        array = [[0 if isinstance(x, set) else x for x in row] for row in self._array]
+        return array
 
     def _create_empty_board(self):
         return np.array([{1, 2, 3, 4, 5, 6, 7, 8, 9} for _ in self.request.flatten()]).reshape(self.request.shape)
