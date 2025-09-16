@@ -1,4 +1,4 @@
-from sudoku.model.sudoku_random_creator import SudokuRandomCreator
+from sudoku.model.generators.sudoku_generator import SudokuGenerator
 from sudoku.model.sudoku_solver import SudokuSolver
 from sudoku.view.SudokuPrinter import SudokuPrinter
 
@@ -7,24 +7,24 @@ if __name__ == "__main__":
     Example of using random creator to generate sudoku.
     Creator constructor takes one parameter of clues number.
     """
-    creator = SudokuRandomCreator(35)
+    creator = SudokuGenerator(28)
     sudoku = creator.create()
 
-    print(f"Generated sudoku ->\n{sudoku}")
+    print(f"Generated sudoku -> {sudoku}")
 
     """
     Omitting clue number will cause use of default value.
     """
-    creator = SudokuRandomCreator()
-    print(f"Default clue value ->\n{creator.clue_number}")
+    creator = SudokuGenerator()
+    print(f"Default clue value -> {creator.clue_number}")
 
     """
     It is also possible to use random clues class method with 2 parameters - min and max clue number.
     After constructing instance of creator class random value between this two boundaries inclusively will be generated 
     and used for all next create invocation. 
     """
-    creator = SudokuRandomCreator.random_clues(24, 28)
-    print(f"Default clue value ->\n{creator.clue_number}")
+    creator = SudokuGenerator(24, 28)
+    print(f"Default clue value -> {creator.clue_number}")
 
     """
     Generated sudoku (list) can be printed to html document with use of SudokuPrinter class.
@@ -39,5 +39,5 @@ if __name__ == "__main__":
     """
     solver = SudokuSolver(sudoku)
     result = solver.solve()
-    print(f"Result ->\n{result}")
-    print(f"Complexity ->\n{solver.chains}")
+    print(f"Result -> {result}")
+    print(f"Complexity -> {solver.chains}")
