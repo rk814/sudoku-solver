@@ -3,7 +3,7 @@ import random
 from sudoku.model.board import Board
 
 
-class SudokuDummyCreator:
+class SudokuRandomCreator:
     DEFAULT_CLUE_NUMBER = 25
 
     def __init__(self, clue_number=DEFAULT_CLUE_NUMBER):
@@ -33,5 +33,5 @@ class SudokuDummyCreator:
 
 
 if __name__ == "__main__":
-    s = SudokuDummyCreator.random_clues()
+    s = SudokuRandomCreator.random_clues()
     print(s.create())
