@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from sudoku.exceptions.core import *
-from sudoku.model.sudoku_dummy_creator import SudokuDummyCreator
+from sudoku.model.generators.sudoku_random_generator import SudokuRandomGenerator
 from sudoku.model.sudoku_solver import SudokuSolver
 
 
@@ -12,17 +12,13 @@ class AssertProbability:
 
     def run(self, times):
         for i in range(times):
-            sudoku = self._create_sudoku()
-            current_result = self._assert_sudoku(sudoku)
+            current_result = self._assert_sudoku()
             self._print_summary(i, current_result, len(str(times)))
             self.result[current_result] += 1
 
-    def _create_sudoku(self):
-        creator = SudokuDummyCreator(self.clue_number)
-        return creator.create()
-
-    def _assert_sudoku(self, sudoku):
+    def _assert_sudoku(self):
         try:
+            sudoku = self._create_sudoku()
             solver = SudokuSolver(sudoku)
             solver.solve()
         except UnresolvableException:
@@ -30,6 +26,10 @@ class AssertProbability:
         except AmbiguousException:
             return "ambiguous"
         return "valid"
+
+    def _create_sudoku(self):
+        creator = SudokuRandomGenerator(self.clue_number)
+        return creator.create()
 
     def _count_probability(self):
         all_results = self.result['unresolvable'] + self.result['ambiguous'] + self.result['valid']
@@ -48,6 +48,6 @@ class AssertProbability:
 
 
 if __name__ == "__main__":
-    assertion = AssertProbability(17)
-    assertion.run(100)
+    assertion = AssertProbability(28)
+    assertion.run(1000)
     print(assertion)
