@@ -35,43 +35,43 @@ class TestBoard(unittest.TestCase):
         board = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         cell = (1, 2)
 
-        actual = board.get_row_by_cell(cell)
+        actual = board.get_row(cell)
         npt.assert_array_equal(actual, np.array([4, 5, 6]))
 
         cell = (2, 0)
 
-        actual = board.get_row_by_cell(cell)
+        actual = board.get_row(cell)
         npt.assert_array_equal(actual, np.array([7, 8, 9]))
 
     def test_get_col_by_cell(self):
         board = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         cell = (1, 2)
 
-        actual = board.get_col_by_cell(cell)
+        actual = board.get_col(cell)
         npt.assert_array_equal(actual, np.array([3, 6, 9]))
 
         cell = (2, 0)
 
-        actual = board.get_col_by_cell(cell)
+        actual = board.get_col(cell)
         npt.assert_array_equal(actual, np.array([1, 4, 7]))
 
     def test_get_square_by_cell(self):
         board = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         cell = (1, 2)
 
-        actual = board.get_square_by_cell(cell)
+        actual = board.get_box(cell)
         npt.assert_array_equal(actual, np.array([1, 2, 3, 4, 5, 6, 7, 8, 9]))
 
         cell = (5, 8)
 
-        actual = self.test_board.get_square_by_cell(cell)
+        actual = self.test_board.get_box(cell)
         npt.assert_array_equal(actual, np.array([8, {2, 5, 6, 7, 9}, {2, 5, 7, 9},
                                                  {1, 2, 6, 9}, 4, {1, 2, 5, 9},
                                                  {1, 2, 6}, {1, 2, 5, 6}, 3]))
 
         cell = (7, 8)
 
-        actual = self.test_board.get_square_by_cell(cell)
+        actual = self.test_board.get_box(cell)
         npt.assert_array_equal(actual, np.array([{1, 2, 3, 7, 9}, {1, 2, 7, 9}, 6,
                                                  {1, 3, 7, 9}, 8, {1, 4, 7, 9}, 5,
                                                  {7, 9}, {4, 7, 9}]))
@@ -79,27 +79,28 @@ class TestBoard(unittest.TestCase):
     def test_get_cell(self):
         board = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         cell = (1, 1)
-        actual = board.get_cell(cell)
+        actual = board.get_value(cell)
 
         self.assertEqual(actual, 5)
 
         cell = (0, 2)
-        actual = board.get_cell(cell)
+        actual = board.get_value(cell)
 
         self.assertEqual(actual, 3)
 
     def test_set_cell(self):
         board = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         cell = (1, 1)
-        board.set_cell(cell, 0)
+        board.set_value(cell, 0)
 
-        self.assertEqual(board.array[1][1], 0)
+        self.assertEqual(board.as_list()[1][1], 0)
 
         board = Board([[1, 2, 0], [0, 5, 6], [7, 8, 9]])
         cell = (0, 2)
-        board.set_cell(cell, 4)
-        self.assertEqual(board.array[0][2], 4)
-        self.assertEqual(board.array[1][0], {3})
+        board.set_value(cell, 4)
+        self.assertEqual(board.as_list()[0][2], 4)
+        self.assertEqual(board.as_list()[1][0], 0)
+        self.assertEqual(board._array[1][0], {3})
 
     def test_is_solved(self):
         board1 = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
@@ -112,18 +113,13 @@ class TestBoard(unittest.TestCase):
 
         self.assertFalse(actual)
 
-        board2 = Board([[]])
-        board2.array = None
-        actual = board2.is_solved()
-        print(actual)
-
     def test_cell_pos_with_lowest_candidates_num(self):
         board = Board([[0, 0, 0], [0, 0, 0]])
         board._array = np.array([[{1, 2}, {1}, {2, 3}], [{4, 5}, {1, 2}, {1}]])
 
-        actual = board.get_cell_pos_with_lowest_candidates_num()
+        actual = board.find_cell_pos_with_fewest_candidates()
 
-        self.assertEqual(actual, (0, 1))
+        npt.assert_array_equal(actual, np.array([0, 1]))
 
     def test_sudoku_copy(self):
         sudoku = Board([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
@@ -131,19 +127,19 @@ class TestBoard(unittest.TestCase):
         actual = sudoku.copy()
 
         self.assertNotEqual(actual, sudoku)
-        self.assertEqual(actual.array, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        self.assertEqual(actual.as_list(), [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
     def test_get_any_candidate(self):
         candidates = {1, 2, 5, 6, 7}
 
-        actual = Board.get_any_candidate(candidates)
+        actual = Board.any_candidate(candidates)
 
         self.assertIn(actual, candidates)
 
     def test_get_empty_positions(self):
         board = Board.from_empty()
 
-        actual = board.get_empty_cell_positions()
+        actual = board.find_empty_cells_positions()
 
         self.assertIn([0, 0], actual)
         self.assertIn([8, 8], actual)

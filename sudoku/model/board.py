@@ -19,21 +19,10 @@ class Board:
         empty_board = np.zeros((9, 9))
         return cls(empty_board)
 
-    @property
-    def array(self):
-        return self._array.tolist()
-
-    @array.setter  # ??? do i need it
-    def array(self, value):
-        self._array = np.array(value)
-
-    def get_zfill_array(self):
-        return self._zfill_array()
-
-    def get_cell(self, pos):
+    def get_value(self, pos):
         return self._array[pos[0], pos[1]]
 
-    def set_cell(self, pos, value):
+    def set_value(self, pos, value):
         row, col = pos
         self._array[row, col] = value
 
@@ -41,66 +30,75 @@ class Board:
         self._process_col((row, col), value)
         self._process_square((row, col), value)
 
-    def get_row_by_cell(self, pos):
+    def get_row(self, pos):
         return self._array[pos[0]]
 
-    def get_col_by_cell(self, pos):
+    def get_col(self, pos):
         return self._array[:, pos[1]]
 
-    def get_square_by_cell(self, pos):
+    def get_box(self, pos):
         row_from = pos[0] // 3 * 3
         row_to = (pos[0] // 3 + 1) * 3
         col_from = pos[1] // 3 * 3
         col_to = (pos[1] // 3 + 1) * 3
         return self._array[row_from: row_to, col_from: col_to].ravel()
 
-    def get_cell_pos_with_lowest_candidates_num(self):
-        array_of_lengths = np.array([len(x) if isinstance(x, set) else None for x in self._array.flatten()])
-        lowest_num = np.min(array_of_lengths[array_of_lengths != None])
-        indices = np.where(array_of_lengths.reshape(self._array.shape) == lowest_num)
-        return indices[0][0], indices[1][0]
+    def find_cell_pos_with_fewest_candidates(self):
+        candidates_count = np.vectorize(lambda x: 10 if np.isscalar(x) else len(x))(self._array.flatten())
+        lowest_num = np.min(candidates_count)
+        indices = np.argwhere(candidates_count.reshape(self._array.shape) == lowest_num)
+        return indices[0]
 
-    def get_empty_cell_positions(self):
-        mask = np.vectorize(lambda x: isinstance(x, set))(self.array)
+    def find_empty_cells_positions(self):
+        mask = self._empty_mask()
         return np.argwhere(mask)
 
     def is_solved(self):
-        return np.all([not isinstance(x, set) for x in self._array.flatten()])
+        mask = self._empty_mask()
+        return np.all(~mask)
 
     def copy(self):
-        array = self._zfill_array()
+        array = self._serialize()
         return Board(array)
 
-    def _zfill_array(self):
-        array = [[0 if isinstance(x, set) else x for x in row] for row in self._array]
-        return array
+    def as_list(self):
+        return self._serialize()
+
+    def _serialize(self):
+        mask = self._empty_mask()
+        return np.where(mask, 0, self._array).tolist()
+
+    def _empty_mask(self):
+        vector = np.vectorize(np.isscalar)
+        mask = ~vector(self._array)
+        return mask
 
     def _create_empty_board(self):
         return np.array([{1, 2, 3, 4, 5, 6, 7, 8, 9} for _ in self.request.flatten()]).reshape(self.request.shape)
 
     def _initialize_board(self):
-        indices = np.where(self.request != 0)
-        for row, col in zip(indices[0], indices[1]):
+        pos = np.argwhere(self.request != 0)
+        for row, col in pos:
             value = self.request[row, col]
-            self.set_cell((row, col), value)
+            self.set_value((row, col), value)
 
     def _process_row(self, pos, value):
-        row = self.get_row_by_cell(pos)
+        row = self.get_row(pos)
 
-        self._remove_candidates_from_all_cells(row, value)
+        self._remove_candidate_from_group(row, value)
 
     def _process_col(self, pos, value):
-        col = self.get_col_by_cell(pos)
+        col = self.get_col(pos)
 
-        self._remove_candidates_from_all_cells(col, value)
+        self._remove_candidate_from_group(col, value)
 
     def _process_square(self, pos, value):
-        square = self.get_square_by_cell(pos)
-        self._remove_candidates_from_all_cells(square, value)
+        square = self.get_box(pos)
+        self._remove_candidate_from_group(square, value)
 
-    def _remove_candidates_from_all_cells(self, group, value):
+    def _remove_candidate_from_group(self, group, value):
         for cell in group:
-            if isinstance(cell, set):
+            if not np.isscalar(cell):
                 self._remove_candidate_from_cell(cell, value)
 
     def _remove_candidate_from_cell(self, cell, value):
@@ -110,5 +108,5 @@ class Board:
             raise UnresolvableException
 
     @staticmethod
-    def get_any_candidate(cell):
+    def any_candidate(cell):
         return next(iter(cell))

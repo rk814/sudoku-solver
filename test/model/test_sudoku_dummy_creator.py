@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from sudoku.exceptions.core import UnresolvableException
+from sudoku.model.board import Board
 from sudoku.model.generators.sudoku_random_generator import SudokuRandomGenerator
 
 

@@ -18,15 +18,15 @@ class SudokuSolver:
     def solve(self):
         self._board = self._main_loop(self._board)
         print(f"Number of chains: {self.chains}")
-        return self._board.array
+        return self._board.as_list()
 
     def _main_loop(self, board):
         while not board.is_solved():
-            cell_position = board.get_cell_pos_with_lowest_candidates_num()
-            cell = board.get_cell(cell_position)
+            cell_position = board.find_cell_pos_with_fewest_candidates()
+            cell = board.get_value(cell_position)
 
             if len(cell) == 1:
-                board.set_cell(cell_position, Board.get_any_candidate(cell))
+                board.set_value(cell_position, Board.any_candidate(cell))
             else:
                 board = self._chain_loop(board, cell_position)
                 self._add_chain()
@@ -37,7 +37,7 @@ class SudokuSolver:
     def _chain_loop(self, board, cell_position):
         final_result = None
 
-        candidates = board.get_cell(cell_position)
+        candidates = board.get_value(cell_position)
         for cell in candidates:
             board_copy = board.copy()
             try:
@@ -56,7 +56,7 @@ class SudokuSolver:
         self._chains += 1
 
     def _try_candidate(self, board_copy, candidate, cell_position):
-        board_copy.set_cell(cell_position, candidate)
+        board_copy.set_value(cell_position, candidate)
         current_result = self._main_loop(board_copy)
         return current_result
 

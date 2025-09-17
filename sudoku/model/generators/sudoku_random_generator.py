@@ -19,13 +19,13 @@ class SudokuRandomGenerator:
         board = Board.from_empty()
 
         for i in range(self.clue_number):
-            empty_positions = board.get_empty_cell_positions()
+            empty_positions = board.find_empty_cells_positions()
             random_position = random.choice(empty_positions)
-            candidates = board.get_cell(random_position)
+            candidates = board.get_value(random_position)
             random_value = random.choice(list(candidates))
-            board.set_cell(random_position, random_value)
+            board.set_value(random_position, random_value)
 
-        return board.get_zfill_array()
+        return board.as_list()
 
     def _validate_clue_number(self):
         if 17 > self.clue_number or self.clue_number > 80:
