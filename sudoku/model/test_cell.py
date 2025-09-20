@@ -23,3 +23,10 @@ class TestCell(TestCase):
         actual = cell.is_solved()
 
         self.assertFalse(actual)
+
+    def test_get_any_candidate(self):
+        cell = Cell({1, 2, 5, 6, 7})
+
+        actual = cell.any_candidate()
+
+        self.assertIn(actual, {1, 2, 5, 6, 7})

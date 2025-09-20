@@ -21,7 +21,7 @@ class SudokuRandomGenerator:
         for i in range(self.clue_number):
             empty_positions = board.find_empty_cells_positions()
             random_position = random.choice(empty_positions)
-            candidates = board.get_value(random_position)
+            candidates = board.get_cell(random_position).value
             random_value = random.choice(list(candidates))
             board.set_value(random_position, random_value)
 

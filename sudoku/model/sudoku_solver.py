@@ -37,7 +37,7 @@ class SudokuSolver:
     def _chain_loop(self, board, cell_position):
         final_result = None
 
-        candidates = board.get_value(cell_position)
+        candidates = board.get_cell(cell_position).value
         for cell in candidates:
             board_copy = board.copy()
             try:

@@ -1,6 +1,5 @@
 import numpy as np
 
-from sudoku.exceptions.core import UnresolvableException
 from sudoku.model.cell import Cell
 
 
@@ -20,11 +19,7 @@ class Board:
         empty_board = np.zeros((9, 9))
         return cls(empty_board)
 
-    def get_value(self, pos):
-        cell = self._array[pos[0], pos[1]]
-        return cell.value
-
-    def get_cell(self,pos):
+    def get_cell(self, pos):
         return self._array[pos[0], pos[1]]
 
     def set_value(self, pos, value):
@@ -85,12 +80,10 @@ class Board:
 
     def _process_row(self, pos, value):
         row = self.get_row(pos)
-
         self._remove_candidate_from_group(row, value)
 
     def _process_col(self, pos, value):
         col = self.get_col(pos)
-
         self._remove_candidate_from_group(col, value)
 
     def _process_square(self, pos, value):
@@ -101,10 +94,6 @@ class Board:
         for cell in group:
             if not cell.is_solved():
                 cell.remove_candidate(value)
-
-    @staticmethod
-    def any_candidate(cell):
-        return next(iter(cell))
 
     def __str__(self):
         return f"{self._array}"
