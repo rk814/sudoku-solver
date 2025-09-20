@@ -1,6 +1,7 @@
 import numpy as np
 
 from sudoku.exceptions.core import UnresolvableException
+from sudoku.model.cell import Cell
 
 
 class Board:
@@ -10,7 +11,7 @@ class Board:
         """
 
     def __init__(self, array):
-        self.request = np.array(array)
+        self.request = np.array(array, dtype=int)
         self._array = self._create_empty_board()
         self._initialize_board()
 
@@ -20,11 +21,16 @@ class Board:
         return cls(empty_board)
 
     def get_value(self, pos):
+        cell = self._array[pos[0], pos[1]]
+        return cell.value
+
+    def get_cell(self,pos):
         return self._array[pos[0], pos[1]]
 
     def set_value(self, pos, value):
         row, col = pos
-        self._array[row, col] = value
+        cell = self._array[row, col]
+        cell.value = value
 
         self._process_row((row, col), value)
         self._process_col((row, col), value)
@@ -44,7 +50,7 @@ class Board:
         return self._array[row_from: row_to, col_from: col_to].ravel()
 
     def find_cell_pos_with_fewest_candidates(self):
-        candidates_count = np.vectorize(lambda x: 10 if np.isscalar(x) else len(x))(self._array.flatten())
+        candidates_count = np.vectorize(lambda x: 10 if x.is_solved() else x.candidates_count())(self._array.flatten())
         lowest_num = np.min(candidates_count)
         indices = np.argwhere(candidates_count.reshape(self._array.shape) == lowest_num)
         return indices[0]
@@ -58,23 +64,18 @@ class Board:
         return np.all(~mask)
 
     def copy(self):
-        array = self._serialize()
+        array = self.as_list()
         return Board(array)
 
     def as_list(self):
-        return self._serialize()
-
-    def _serialize(self):
-        mask = self._empty_mask()
-        return np.where(mask, 0, self._array).tolist()
+        return np.array([x.serialize() for x in self._array.flatten()]).reshape(self._array.shape).tolist()
 
     def _empty_mask(self):
-        vector = np.vectorize(np.isscalar)
-        mask = ~vector(self._array)
-        return mask
+        mask = np.vectorize(lambda x: not x.is_solved())(self._array.flatten())
+        return mask.reshape(self._array.shape)
 
     def _create_empty_board(self):
-        return np.array([{1, 2, 3, 4, 5, 6, 7, 8, 9} for _ in self.request.flatten()]).reshape(self.request.shape)
+        return np.array([Cell() for _ in range(self.request.size)]).reshape(self.request.shape)
 
     def _initialize_board(self):
         pos = np.argwhere(self.request != 0)
@@ -98,15 +99,12 @@ class Board:
 
     def _remove_candidate_from_group(self, group, value):
         for cell in group:
-            if not np.isscalar(cell):
-                self._remove_candidate_from_cell(cell, value)
-
-    def _remove_candidate_from_cell(self, cell, value):
-        cell -= {value}
-
-        if len(cell) == 0:
-            raise UnresolvableException
+            if not cell.is_solved():
+                cell.remove_candidate(value)
 
     @staticmethod
     def any_candidate(cell):
         return next(iter(cell))
+
+    def __str__(self):
+        return f"{self._array}"

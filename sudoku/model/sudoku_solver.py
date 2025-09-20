@@ -8,7 +8,7 @@ class SudokuSolver:
     """
 
     def __init__(self, array):
-        self._board = Board(array)  # ??? maybe better inject board ?
+        self._board = Board(array)
         self._chains = 0
 
     @property
@@ -23,10 +23,10 @@ class SudokuSolver:
     def _main_loop(self, board):
         while not board.is_solved():
             cell_position = board.find_cell_pos_with_fewest_candidates()
-            cell = board.get_value(cell_position)
+            cell = board.get_cell(cell_position)
 
-            if len(cell) == 1:
-                board.set_value(cell_position, Board.any_candidate(cell))
+            if cell.candidates_count() == 1:
+                board.set_value(cell_position, cell.any_candidate())
             else:
                 board = self._chain_loop(board, cell_position)
                 self._add_chain()
