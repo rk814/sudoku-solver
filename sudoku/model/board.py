@@ -10,7 +10,7 @@ class Board:
         """
 
     def __init__(self, array):
-        self.request = np.array(array, dtype=int)
+        self.request = np.array(array, dtype=np.int8)
         self._array = self._create_empty_board()
         self._initialize_board()
 
@@ -65,6 +65,9 @@ class Board:
     def as_list(self):
         return np.array([x.serialize() for x in self._array.flatten()]).reshape(self._array.shape).tolist()
 
+    def serialize(self):
+        return np.array([x.value for x in self._array.flatten()]).reshape(self._array.shape).tolist()
+
     def _empty_mask(self):
         mask = np.vectorize(lambda x: not x.is_solved())(self._array.flatten())
         return mask.reshape(self._array.shape)
@@ -96,4 +99,7 @@ class Board:
                 cell.remove_candidate(value)
 
     def __str__(self):
-        return f"{self._array}"
+        return f"{self.serialize()}"
+
+    def __repr__(self):
+        return f"{self.serialize()}"

@@ -7,14 +7,11 @@ class Cell:
 
     @property
     def value(self):
-        return self._value
+        return int(self._value) if self.is_solved() else self._value
 
     @value.setter
     def value(self, value):
         self._value = value
-
-    def serialize(self):
-        return int(self.value) if self.is_solved() else 0
 
     def remove_candidate(self, candidate):
         if self.is_solved():
@@ -34,6 +31,9 @@ class Cell:
 
     def any_candidate(self):
         return next(iter(self._value))
+
+    def serialize(self):
+        return self.value.flat if self.is_solved() else 0
 
     def __str__(self):
         return f"{self._value}"

@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import numpy.testing as npt
@@ -28,7 +29,8 @@ class TestBoard(unittest.TestCase):
         sudoku = Board([[0, 0, 1, 0], [2, 6, 0, 9], [3, 7, 5, 8]])
         npt.assert_array_equal(sudoku._array,
                                np.array([[Cell({4, 8, 9}), Cell({4, 8, 9}), Cell(1), Cell({2, 3, 4, 5, 6, 7})],
-                               [Cell(2), Cell(6), Cell({4, 8}), Cell(9)], [Cell(3), Cell(7), Cell(5), Cell(8)]]))
+                                         [Cell(2), Cell(6), Cell({4, 8}), Cell(9)],
+                                         [Cell(3), Cell(7), Cell(5), Cell(8)]]))
 
         with self.assertRaises(UnresolvableException):
             Board([[0, 4, 1, 9], [2, 6, 8, 9], [3, 7, 5, 8]])
@@ -145,3 +147,13 @@ class TestBoard(unittest.TestCase):
         self.assertIn([8, 8], actual)
         self.assertIn([5, 5], actual)
         self.assertNotIn([10, 10], actual)
+
+    @patch('builtins.print')
+    def test_str(self, mock_print):
+        board = Board([[1, 2, 0], [3, 4, 5], [6, 7, 0]])
+
+        print(board)
+
+        self.assertEqual(mock_print.call_count, 1)
+
+        self.assertEqual(str(mock_print.call_args[0][0]), str([[1, 2, {8, 9}], [3, 4, 5], [6, 7, {8, 9}]]))
