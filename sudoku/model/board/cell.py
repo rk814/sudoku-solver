@@ -33,7 +33,7 @@ class Cell:
         return next(iter(self._value))
 
     def serialize(self):
-        return self.value.flat if self.is_solved() else 0
+        return int(self.value) if self.is_solved() else 0
 
     def __str__(self):
         return f"{self._value}"
