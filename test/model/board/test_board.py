@@ -5,7 +5,7 @@ import numpy as np
 import numpy.testing as npt
 
 from sudoku.exceptions.core import UnresolvableException
-from sudoku.model.cell import Cell
+from sudoku.model.board.cell import Cell
 from sudoku.model.sudoku_solver import Board
 
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-from sudoku.model.cell import Cell
+from sudoku.model.board.cell import Cell
 
 
 class Board:

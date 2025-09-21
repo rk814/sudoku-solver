@@ -1,6 +1,6 @@
 import random
 
-from sudoku.model.board import Board
+from sudoku.model.board.board import Board
 
 
 class SudokuRandomGenerator:

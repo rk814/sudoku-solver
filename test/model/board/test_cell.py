@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from sudoku.model.cell import Cell
+from sudoku.model.board.cell import Cell
 
 
 class TestCell(TestCase):

@@ -1,5 +1,5 @@
 from sudoku.exceptions.core import UnresolvableException, AmbiguousException
-from sudoku.model.board import Board
+from sudoku.model.board.board import Board
 
 
 class SudokuSolver:

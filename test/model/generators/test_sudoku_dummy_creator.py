@@ -1,11 +1,10 @@
 from unittest import TestCase
 
 from sudoku.exceptions.core import UnresolvableException
-from sudoku.model.board import Board
 from sudoku.model.generators.sudoku_random_generator import SudokuRandomGenerator
 
 
-class TestSudokuDummyCreator(TestCase):
+class TestSudokuRandomGenerator(TestCase):
 
     def test_sudoku_constructor_validator_with_valid_numbers(self):
         cases = [17, 18, 55, 80]
