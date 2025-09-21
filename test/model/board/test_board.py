@@ -157,3 +157,10 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(mock_print.call_count, 1)
 
         self.assertEqual(str(mock_print.call_args[0][0]), str([[1, 2, {8, 9}], [3, 4, 5], [6, 7, {8, 9}]]))
+
+    def test_repr(self):
+        board = Board([[1, 2, 0], [3, 4, 5], [6, 7, 0]])
+
+        actual = repr(board)
+
+        self.assertEqual(actual, str([[1, 2, {8, 9}], [3, 4, 5], [6, 7, {8, 9}]]))
