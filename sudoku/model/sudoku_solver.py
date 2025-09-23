@@ -61,8 +61,6 @@ class SudokuSolver:
         return current_result
 
     def _assert_result(self, final_result, current_result):
-        if current_result is None:
-            return final_result
         if final_result is None:
             return current_result
         raise AmbiguousException

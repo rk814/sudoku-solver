@@ -108,9 +108,9 @@ class TestCell(TestCase):
         cell3 = Cell(2)
 
         self.assertEqual(cell1, cell2)
-        self.assertNotEquals(cell1, cell3)
-        self.assertNotEquals(cell2, cell3)
-        self.assertNotEquals(cell1, 1)
-        self.assertNotEquals(cell1, "1")
+        self.assertNotEqual(cell1, cell3)
+        self.assertNotEqual(cell2, cell3)
+        self.assertNotEqual(cell1, 1)
+        self.assertNotEqual(cell1, "1")
 
 

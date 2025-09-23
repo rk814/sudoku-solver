@@ -27,6 +27,11 @@ if __name__ == "__main__":
     print(f"Default clue value -> {creator.clue_number}")
 
     """
+    The simplest way to create a Sudoku is by using the static methods of the SudokuGenerator class.
+    Three options are available — easy, medium, and hard — each with a predefined number of clues. 
+    """
+    easy_sudoku = SudokuGenerator.easy()
+    """
     Generated sudoku (list) can be printed to html document with use of SudokuPrinter class.
     File is saved in output project folder.
     """

@@ -16,7 +16,7 @@ class SudokuLuckyFinder(SudokuRandomGenerator):
             if self._is_solvable(sudoku):
                 return sudoku
 
-        raise Exception(f"Not found valid sudoku in {SudokuLuckyFinder.MAX_ITERATIONS} iterations")
+        raise RuntimeError(f"Not found valid sudoku in {SudokuLuckyFinder.MAX_ITERATIONS} iterations")
 
     def _is_solvable(self, sudoku):
         try:
