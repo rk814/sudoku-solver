@@ -1,4 +1,4 @@
-![image](image\sudoku1.jpg)
+![image](./image/sudoku1.jpg)
 # Sudoku Solver
 ## Overview
 The Sudoku Solver started as a basic project — an algorithm designed to solve Sudoku puzzles.
@@ -82,20 +82,20 @@ classDiagram
         +medium() Sudoku
         +hard() Sudoku
     }
-    style SudokuGenerator fill: #555
+    style SudokuGenerator fill: #9090ff
     class SudokuSolver {
         <<control>>
         +SudokuSolver(Sudoku)
         +chains: int
         +solve() Sudoku throws Exception
     }
-    style SudokuSolver fill: #555
+    style SudokuSolver fill: #9090ff
     class SudokuPrinter {
          <<control>>
         +SudokuPrinter(path: String)
         +print(Sudoku)
     }
-    style SudokuPrinter fill: #555
+    style SudokuPrinter fill: #9090ff
     class AmbiguousException {
         <<exception>>
     }
